@@ -1,0 +1,8 @@
+# Files excluded from the published VSIX (vsce package / vsce publish)
+tests/**
+.github/**
+**/*.map
+**/.DS_Store
+node_modules/**
+scripts/build-vsix.ps1
+scripts/verify-integrity.ps1

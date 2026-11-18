@@ -1,0 +1,368 @@
+{
+  "name": "whale-bone",
+  "displayName": "Whale Bone",
+  "publisher": "zzahed",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zzahed/whale-bone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zzahed/whale-bone/issues"
+  },
+  "homepage": "https://github.com/zzahed/whale-bone#readme",
+  "preview": true,
+  "pricing": "Free",
+  "description": "AI coding assistant for VS Code that works with any OpenAI-compatible API: reviewed workspace edits, secret redaction, and configurable proxy support (computer or user authentication) for API, pip and npm traffic.",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "Whale Bone",
+    "OpenAI-compatible",
+    "NTLM",
+    "offline",
+    "coding agent",
+    "vibe coding",
+    "enterprise proxy",
+    "AI",
+    "proxy",
+    "pip",
+    "npm"
+  ],
+  "icon": "media/whale-bone.png",
+  "main": "./src/extension.js",
+  "extensionKind": [
+    "ui"
+  ],
+  "activationEvents": [
+    "onChatParticipant:whaleBone.coder",
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "whaleBone",
+          "title": "Whale Bone",
+          "icon": "media/whale-bone-activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "whaleBone": [
+        {
+          "id": "whaleBone.chatView",
+          "name": "Whale Bone",
+          "type": "webview",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "whaleBone.openChat",
+        "title": "Whale Bone: Open Chat"
+      },
+      {
+        "command": "whaleBone.chooseWorkspace",
+        "title": "Whale Bone: Choose Workspace"
+      },
+      {
+        "command": "whaleBone.addSelection",
+        "title": "Whale Bone: Attach Editor Selection"
+      },
+      {
+        "command": "whaleBone.setApiKey",
+        "title": "Whale Bone: Set API Key"
+      },
+      {
+        "command": "whaleBone.setProxyPassword",
+        "title": "Whale Bone: Set Proxy Password"
+      },
+      {
+        "command": "whaleBone.testConnection",
+        "title": "Whale Bone: Test API Connection"
+      },
+      {
+        "command": "whaleBone.diagnostics",
+        "title": "Whale Bone: Diagnostics"
+      },
+      {
+        "command": "whaleBone.inlineEdit",
+        "title": "Whale Bone: Inline Edit (Review Before Apply)"
+      },
+      {
+        "command": "whaleBone.troubleshoot",
+        "title": "Whale Bone: Troubleshoot and Self-Check"
+      },
+      {
+        "command": "whaleBone.reviewSelection",
+        "title": "Whale Bone: Review Selected Code"
+      },
+      {
+        "command": "whaleBone.generateTests",
+        "title": "Whale Bone: Generate Unit Tests (Review Before Apply)"
+      },
+      {
+        "command": "whaleBone.generateApiConnector",
+        "title": "Whale Bone: Generate External API Connector Script"
+      },
+      {
+        "command": "whaleBone.authorizeWorkspace",
+        "title": "Whale Bone: Authorize Workspace for AI Requests"
+      },
+      {
+        "command": "whaleBone.explainSelection",
+        "title": "Whale Bone: Explain Selected Code Only"
+      },
+      {
+        "command": "whaleBone.acceptInline",
+        "title": "Whale Bone: Accept Inline Suggestion"
+      },
+      {
+        "command": "whaleBone.rejectInline",
+        "title": "Whale Bone: Reject Inline Suggestion"
+      },
+      {
+        "command": "whaleBone.previewInline",
+        "title": "Whale Bone: Review Detailed Inline Diff"
+      },
+      {
+        "command": "whaleBone.retryInline",
+        "title": "Whale Bone: Retry Inline Suggestion"
+      },
+      {
+        "command": "whaleBone.toggleAutocomplete",
+        "title": "Whale Bone: Toggle Tab Autocomplete"
+      },
+      {
+        "command": "whaleBone.toggleAgentTools",
+        "title": "Whale Bone: Toggle Approved Test Tools"
+      },
+      {
+        "command": "whaleBone.pythonPackages",
+        "title": "Whale Bone: Manage Python Packages (Proxy-Aware pip)"
+      },
+      {
+        "command": "whaleBone.npmPackages",
+        "title": "Whale Bone: Manage Node.js and npm Packages (Proxy-Aware)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "whaleBone.chooseWorkspace",
+          "when": "view == whaleBone.chatView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "whaleBone.troubleshoot",
+          "when": "view == whaleBone.chatView",
+          "group": "navigation@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "whaleBone.addSelection",
+          "when": "editorHasSelection",
+          "group": "navigation@99"
+        },
+        {
+          "command": "whaleBone.inlineEdit",
+          "when": "editorTextFocus",
+          "group": "navigation@98"
+        },
+        {
+          "command": "whaleBone.reviewSelection",
+          "when": "editorTextFocus",
+          "group": "whaleBone@1"
+        },
+        {
+          "command": "whaleBone.generateTests",
+          "when": "editorTextFocus && resourceExtname =~ /\\.(py|js|ts)$/i",
+          "group": "whaleBone@2"
+        },
+        {
+          "command": "whaleBone.explainSelection",
+          "when": "editorHasSelection",
+          "group": "whaleBone@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Whale Bone",
+      "properties": {
+        "whaleBone.baseUrl": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "description": "HTTPS OpenAI-compatible API endpoint ending in /v1, for example https://your-provider.example/v1. The API key is stored separately for each endpoint."
+        },
+        "whaleBone.proxyEnabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "Send requests through a proxy. When off, Whale Bone connects directly and also ignores the Windows system proxy."
+        },
+        "whaleBone.proxyUrl": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "description": "Proxy as host:port (for example proxy.example.com:8080). Leave empty to use the Windows system proxy."
+        },
+        "whaleBone.proxyAuth": {
+          "type": "string",
+          "enum": [
+            "computer",
+            "user",
+            "none"
+          ],
+          "enumDescriptions": [
+            "Computer authentication: Windows-integrated credentials of the signed-in user (NTLM/Kerberos).",
+            "User authentication: the proxy user name below and a password set with 'Whale Bone: Set Proxy Password' (stored in VS Code SecretStorage).",
+            "No proxy authentication."
+          ],
+          "default": "computer",
+          "scope": "application",
+          "description": "How Whale Bone authenticates to the proxy."
+        },
+        "whaleBone.proxyUsername": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "description": "Proxy user name (user or DOMAIN\\user) for user proxy authentication. The password is never stored in settings."
+        },
+        "whaleBone.userAgent": {
+          "type": "string",
+          "default": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+          "scope": "application",
+          "description": "User-Agent header sent with API and package requests."
+        },
+        "whaleBone.authMode": {
+          "type": "string",
+          "enum": [
+            "x-api-key",
+            "bearer"
+          ],
+          "default": "x-api-key",
+          "scope": "application"
+        },
+        "whaleBone.model": {
+          "type": "string",
+          "default": "openai/gpt-oss-120b",
+          "scope": "application",
+          "description": "Model ID on the configured API."
+        },
+        "whaleBone.comparisonModels": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "description": "Optional comma-separated models for 2–3 model comparison."
+        },
+        "whaleBone.timeoutSeconds": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 900,
+          "default": 180,
+          "scope": "application"
+        },
+        "whaleBone.outputTokens": {
+          "description": "Upper bound for generated output (256–262144); actual max_tokens is reduced to fit context and the provider may impose stricter limits.",
+          "type": "integer",
+          "minimum": 256,
+          "maximum": 262144,
+          "default": 65536,
+          "scope": "application"
+        },
+        "whaleBone.autocomplete.enabled": {
+          "type": "boolean",
+          "default": false,
+          "scope": "application",
+          "description": "Opt-in Tab autocomplete. Sends bounded source around each cursor position to the configured AI endpoint after workspace consent. Off by default."
+        },
+        "whaleBone.autocomplete.delayMs": {
+          "type": "integer",
+          "default": 750,
+          "minimum": 300,
+          "maximum": 3000,
+          "scope": "application",
+          "description": "Delay before autocomplete requests after typing, in milliseconds."
+        },
+        "whaleBone.agent.tools": {
+          "type": "string",
+          "enum": [
+            "read-only",
+            "approved-tests"
+          ],
+          "default": "read-only",
+          "scope": "application",
+          "description": "Enable approved allowlisted test execution in Agent Build. Every invocation still requires separate confirmation."
+        },
+        "whaleBone.agent.testTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 600,
+          "default": 180,
+          "scope": "application",
+          "description": "Maximum seconds for each explicitly approved test run. Stops the process tree on timeout where supported."
+        },
+        "whaleBone.context.includeDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "Include a bounded summary of VS Code Problems from the active approved editor in repository chat requests."
+        },
+        "whaleBone.contextWindowTokens": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 2097152,
+          "default": 131072,
+          "scope": "application",
+          "description": "Approximate context window configured for the model (8192–2097152). Provider quota may be lower. Output allowance adjusts to estimated input size."
+        },
+        "whaleBone.reviewOutbound": {
+          "type": "boolean",
+          "default": false,
+          "scope": "application",
+          "description": "Review each outbound model context in a read-only VS Code preview, then explicitly approve transmission. Includes subsequent agent tool turns. When enabled, Tab autocomplete is suspended to avoid repeated approval prompts. API keys are never shown in previews."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "whaleBone.inlineEdit",
+        "key": "ctrl+alt+shift+i",
+        "when": "editorTextFocus"
+      }
+    ],
+    "chatParticipants": [
+      {
+        "id": "whaleBone.coder",
+        "name": "whalebone",
+        "fullName": "Whale Bone",
+        "description": "Ask your AI model about your codebase through Whale Bone",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "selection",
+            "description": "Explain only the selected source code, without reading the rest of the file"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/extension.js && node --check src/endpoint-policy.js && node --check src/transport.js && node --check src/agent.js && node --check src/workspace.js && node --check src/search-service.js && node --check src/search-worker.js && node --check src/protocol.js && node --check media/view.js && node --check src/editor-chat.js && node --check src/troubleshoot.js && node --check src/chat-history.js && node --check src/programming-actions.js && node --check src/api-connectors.js && node --check src/selection-edit.js && node --check src/inline-review.js && node --check src/selection-tracker.js && node --check src/autocomplete.js && node --check src/agent-tools.js && node --check src/editor-context.js && node --check src/ci-checks.js && node --check scripts/ci-check.js && node --check src/redaction.js && node --check src/requirements.js && node --check src/python-packages.js && node --check src/python-package-ui.js && node --check src/context-budget.js && node --check src/model-limits.js && node --check src/review-editor.js && node --check src/native-selection-guard.js && node --check src/outbound-review.js && node --check src/npm-packages.js && node --check src/npm-package-ui.js",
+    "package": "npx @vscode/vsce package",
+    "publish": "npx @vscode/vsce publish"
+  },
+  "author": "Zaki"
+}

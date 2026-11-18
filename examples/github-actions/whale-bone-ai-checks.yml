@@ -1,0 +1,34 @@
+# OPTIONAL. Copy into YOUR repository's .github/workflows after IT approves sending code to your AI endpoint.
+# Requires an organization-managed Windows self-hosted runner with approved proxy connectivity,
+# Git, Node.js and Windows PowerShell 5.1. Does not install dependencies automatically.
+name: Whale Bone optional AI code checks
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  whale-bone-ai-checks:
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Install or copy the reviewed Whale Bone CLI onto this approved runner ahead of time.
+      # Copy examples/whalebone-checks/*.md into repo/.whalebone/checks/ and commit first.
+      - name: AI checks with the approved API transport
+        shell: powershell
+        continue-on-error: true # Advisory AI feedback, never a required merge gate
+        env:
+          WHALEBONE_API_KEY: ${{ secrets.WHALEBONE_API_KEY }}
+          WHALEBONE_BASE_URL: ${{ vars.WHALEBONE_BASE_URL }} # HTTPS OpenAI-compatible endpoint ending /v1
+          # Optional proxy settings (defaults: enabled, Windows system proxy, computer authentication):
+          # WHALEBONE_PROXY_ENABLED: 'true'
+          # WHALEBONE_PROXY_URL: proxy.example.com:8080
+          # WHALEBONE_PROXY_AUTH: computer   # computer | user | none
+          # WHALEBONE_PROXY_USERNAME: DOMAIN\user
+          # WHALEBONE_PROXY_PASSWORD: ${{ secrets.WHALEBONE_PROXY_PASSWORD }}
+        run: |
+          # The GitHub event base SHA is immutable for this PR; do not use ambiguous origin/main.
+          git fetch --no-tags origin main
+          node "C:\Tools\WhaleBone\scripts\ci-check.js" --workspace "$env:GITHUB_WORKSPACE" --base "${{ github.event.pull_request.base.sha }}"
