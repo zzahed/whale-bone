@@ -26,7 +26,11 @@ It is designed for networks that need a proxy: every request goes through Window
 
 ## Install
 
-From the Marketplace, search for **Whale Bone**. Or, from a file, run **Extensions: Install from VSIX** and select `whale-bone-0.0.1.vsix`, then reload the window.
+1. Download `whale-bone-0.0.1.vsix` from the [GitHub Releases page](https://github.com/zzahed/whale-bone/releases).
+2. In VS Code, run **Extensions: Install from VSIX** and select the downloaded file.
+3. Reload the window.
+
+Whale Bone is not yet on the Visual Studio Marketplace.
 
 ## Getting started
 

@@ -1,0 +1,47 @@
+# Builds the VSIX and publishes it as a GitHub Release when a version tag (v*) is pushed.
+# Uses the workflow's built-in GITHUB_TOKEN; no Marketplace or personal token is needed.
+name: Release VSIX
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check tag matches package.json version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $version" >&2
+            exit 1
+          fi
+
+      - name: Syntax check
+        run: npm run check
+
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce@3.2.1 package --no-dependencies --out "whale-bone-${GITHUB_REF_NAME#v}.vsix"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Whale Bone ${{ github.ref_name }}
+          prerelease: true
+          body: |
+            Download the `.vsix` file below, then in VS Code run **Extensions: Install from VSIX** and select it.
+
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/CHANGELOG.md) for what's new.
+          files: whale-bone-*.vsix
+          fail_on_unmatched_files: true
